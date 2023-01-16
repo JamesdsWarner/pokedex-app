@@ -1,9 +1,10 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const PokemonName = styled.h2`
   margin: 0;
   margin-top: 30px;
   transition: all 300ms ease 0s;
+  font-weight: 800;
 `;
 
 export const BasicStatsWrapper = styled.div`
@@ -20,13 +21,14 @@ export const PokemonCardWrapper = styled.div`
   justify-content: center;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
   transition: all 300ms ease 0s;
+  cursor: pointer;
 
   &:hover {
     box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
   }
 
   &:hover ${PokemonName} {
-    margin-top: 5px;
+    margin-top: 0;
     transition: all 300ms ease 0s;
   }
 
@@ -36,4 +38,13 @@ export const PokemonCardWrapper = styled.div`
   }
 `;
 
-export const BasicStat = styled.p``;
+export const BasicStat = styled.p`
+  margin-top: 8px;
+`;
+
+export const IdNo = styled.p`
+  position: absolute;
+  font-weight: 700;
+  margin-top: 10px;
+  margin-left: 10px;
+`;

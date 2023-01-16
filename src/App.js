@@ -1,9 +1,8 @@
-import HeaderImage from "./components/HeaderImage/HeaderImage.component";
-import SearchBar from "./components/SearchBar/SearchBar.component";
-
-import "./App.css";
-import { GlobalProvider } from "./context/GlobalState";
-import PokemonCards from "./components/PokemonCards/PokemonCards.component";
+import HeaderImage from './components/HeaderImage/HeaderImage.component';
+import Filters from './components/Filters/Filters.component';
+import './App.css';
+import { GlobalProvider } from './context/GlobalState';
+import PokemonCards from './components/PokemonCards/PokemonCards.component';
 
 function App() {
   return (
@@ -13,7 +12,7 @@ function App() {
           <HeaderImage />
         </header>
         <main className="App-main">
-          <SearchBar />
+          <Filters />
           <PokemonCards />
         </main>
       </div>

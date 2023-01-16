@@ -1,4 +1,4 @@
-import * as Styled from "./Sprite.styles";
+import * as Styled from './Sprite.styles';
 
 const Sprite = ({ image }) => {
   return (

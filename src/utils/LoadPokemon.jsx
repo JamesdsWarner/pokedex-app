@@ -1,7 +1,6 @@
 export async function LoadPokemon(allPokemon, setAllPokemon) {
-  const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=50");
+  const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=151');
   const data = await response.json();
-  console.log(data);
 
   const createPokemonObject = (result) => {
     result.forEach(async (pokemon) => {
@@ -11,5 +10,24 @@ export async function LoadPokemon(allPokemon, setAllPokemon) {
     });
   };
   createPokemonObject(data.results);
-  console.log(allPokemon);
+}
+
+export async function LoadTypes(setPokemonTypes) {
+  const response = await fetch('https://pokeapi.co/api/v2/type');
+  const data = await response.json();
+  setPokemonTypes(data.results);
+}
+
+export function LoadTypesFromArray(allPokemon) {
+  var newPokemonTypes = [];
+  allPokemon.map((pokemon) => {
+    for (var i = 0; i < pokemon.types.length; i++) {
+      let thisType = pokemon.types[i].type.name;
+      if (!newPokemonTypes.includes(thisType)) {
+        newPokemonTypes.push(thisType);
+        // setPokemonTypes([...pokemonTypes, thisType]);
+      }
+    }
+  });
+  return newPokemonTypes;
 }
