@@ -1,42 +1,36 @@
-import * as Styled from './PokemonCards.styles';
 import PokemonCard from '../PokemonCard/PokemonCard.component';
 import Modal from 'react-modal';
 import PokemonCardModal from '../PokemonCardModal/PokemonCardModal.component';
 import { useEffect, useState } from 'react';
-import { useContext } from 'react';
-import { GlobalContext } from '../../context/GlobalState';
-import { LoadPokemon } from '../../utils/LoadPokemon';
-import { FilterSearch } from '../../utils/FilterSearch';
-import { LoadTypesFromArray } from '../../utils/LoadPokemon';
-import { LoadTypes } from '../../utils/LoadPokemon';
+import { useDispatch, useSelector } from 'react-redux';
+import { loadPokemon, filterByType } from '../../features/allPokemon/allPokemonSlice';
+import { addTypesWithThunk } from '../../features/pokemonTypes/pokemonTypesSlice';
+
+import * as Styled from './PokemonCards.styles';
 
 const PokemonCards = () => {
-  const {
-    allPokemon,
-    setAllPokemon,
-    searchString,
-    pokemonToDisplay,
-    setPokemonTypes,
-    setPokemonToDisplay,
-  } = useContext(GlobalContext);
+  const dispatch = useDispatch();
+  const { pokemon, loading, error, pokemonToDisplay } = useSelector((state) => state.allPokemon);
+
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalContent, setModalContent] = useState();
 
-  useEffect(() => {
-    LoadPokemon(allPokemon, setAllPokemon);
-  }, []);
+  // console.log(pokemonToDisplay);
 
   useEffect(() => {
-    setPokemonToDisplay(allPokemon);
+    dispatch(loadPokemon());
+  }, [dispatch]);
 
-    if (allPokemon.length === 151) {
-      setPokemonTypes(LoadTypesFromArray(allPokemon));
+  useEffect(() => {
+    if (pokemon.length === 151) {
+      dispatch(addTypesWithThunk());
+      dispatch(filterByType());
     }
-  }, [allPokemon]);
+  }, [pokemon, dispatch]);
 
-  const openModal = (pokemon) => {
+  const openModal = (pokemonToDisplay) => {
     setModalIsOpen(true);
-    setModalContent(pokemon);
+    setModalContent(pokemonToDisplay);
   };
 
   const closeModal = () => {
@@ -58,26 +52,36 @@ const PokemonCards = () => {
     },
   };
 
-  return (
-    <>
-      {FilterSearch(pokemonToDisplay, searchString).length === 0 && (
-        <Styled.NoPokemonText>No Pokemon under that name</Styled.NoPokemonText>
-      )}
-      <Styled.PokemonCardsWrapper>
-        <Modal
-          isOpen={modalIsOpen}
-          onRequestClose={closeModal}
-          style={customStyles}
-          contentLabel="Example Modal"
-        >
-          <PokemonCardModal openModal={openModal} pokemon={modalContent} />
-        </Modal>
-        {FilterSearch(pokemonToDisplay, searchString).map((pokemon, i) => {
-          return <PokemonCard openModal={openModal} pokemon={pokemon} key={i} />;
-        })}
-      </Styled.PokemonCardsWrapper>
-    </>
-  );
+  if (loading === 'pending') {
+    return <Styled.NoPokemonText>Loading...</Styled.NoPokemonText>;
+  }
+
+  if (loading === 'idle') {
+    return (
+      <>
+        {pokemonToDisplay.length === 0 && (
+          <Styled.NoPokemonText>No Pokemon under that name</Styled.NoPokemonText>
+        )}
+        <Styled.PokemonCardsWrapper>
+          <Modal
+            isOpen={modalIsOpen}
+            onRequestClose={closeModal}
+            style={customStyles}
+            contentLabel="Example Modal"
+          >
+            <PokemonCardModal openModal={openModal} pokemon={modalContent} />
+          </Modal>
+          {pokemonToDisplay.map((pokemon, i) => {
+            return <PokemonCard openModal={openModal} pokemon={pokemon} key={i} />;
+          })}
+        </Styled.PokemonCardsWrapper>
+      </>
+    );
+  }
+
+  if (error !== null) {
+    return <Styled.NoPokemonText>{error}</Styled.NoPokemonText>;
+  }
 };
 
 export default PokemonCards;

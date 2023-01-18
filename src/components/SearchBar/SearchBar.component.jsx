@@ -1,12 +1,14 @@
 import * as Styled from './SearchBar.styled';
-import { useContext } from 'react';
-import { GlobalContext } from '../../context/GlobalState';
+import { useDispatch } from 'react-redux';
+import { setSearchString } from '../../features/chosenFilters/chosenFiltersSlice';
+import { filterByType } from '../../features/allPokemon/allPokemonSlice';
 
 const SearchBar = () => {
-  const { setSearchString } = useContext(GlobalContext);
+  const dispatch = useDispatch();
 
   const handleChange = (event) => {
-    setSearchString(event.target.value.toLowerCase().replace(/\s+/g, ''));
+    dispatch(setSearchString(event.target.value.toLowerCase().replace(/\s+/g, '')));
+    dispatch(filterByType());
   };
 
   return (
