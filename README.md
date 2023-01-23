@@ -1,4 +1,4 @@
-# My Portfolio
+# Pokedex App
 
 A short, single page Pokedex app utilising the Pokedex API. Filter and search options available. Built in ReactJS and using React Redux for state management.
 
