@@ -2,6 +2,8 @@
 
 A short, single page Pokedex app utilising the Pokedex API. Filter and search options available. Built in ReactJS and using React Redux for state management.
 
+Find the finished product here: https://ubiquitous-cascaron-232b69.netlify.app/
+
 ## To run the app please follow the instructions
 
 
